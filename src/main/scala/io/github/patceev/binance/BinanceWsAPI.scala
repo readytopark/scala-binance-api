@@ -8,9 +8,11 @@ import akka.http.scaladsl.model.ws.{Message, TextMessage, WebSocketRequest}
 import akka.stream.ActorMaterializer
 import akka.stream.scaladsl.{Flow, Keep, Sink, Source}
 import io.circe.parser._
+import io.github.patceev.binance.models.websocket.CloseEvent.{WebsocketErrorCloseEvent, WebsocketGracefulCloseEvent}
 import io.github.patceev.binance.models.websocket.{EventWS, StreamWS}
 
 import scala.concurrent.{ExecutionContextExecutor, Future, Promise}
+import scala.util.{Failure, Success}
 
 object BinanceWsAPI {
 
@@ -28,22 +30,26 @@ object BinanceWsAPI {
       case _ => ()
     }
 
-    val source = Source.maybe[Message]
-    val sink = Sink.foreach[Message] { handleMessage }
-
-    val flow: Flow[Message, Message, Promise[Option[Message]]] =
+    val flow: Flow[Message, Message, (Future[Done], Promise[Option[Message]])] =
       Flow.fromSinkAndSourceMat(
-        sink,
-        source
-      )(Keep.right)
+        Sink.foreach[Message](handleMessage),
+        Source.maybe[Message]
+      )(Keep.both)
 
     val uri = candleStreamsUri(streams)
 
-    val (upgradeResponse, promise) =
+    val (upgradeResponse, (sinkClose, _)) =
       Http().singleWebSocketRequest(
         WebSocketRequest(uri),
         flow
       )
+
+    sinkClose.onComplete {
+      case Success(_) =>
+        receiver ! WebsocketGracefulCloseEvent(System.currentTimeMillis, streams)
+      case Failure(exception) =>
+        receiver ! WebsocketErrorCloseEvent(System.currentTimeMillis, streams, exception)
+    }
 
     upgradeResponse.map { upgrade =>
       if (upgrade.response.status == StatusCodes.SwitchingProtocols) {

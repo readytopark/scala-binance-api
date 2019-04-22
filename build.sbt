@@ -32,12 +32,10 @@ ThisBuild / publishMavenStyle := true
 
 name := "scala-binance-api"
 
-version := "0.12"
+version := "0.13"
 organization := "io.github.patceev"
 
 scalaVersion := "2.12.8"
-
-useGpg := true
 
 libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-actor" % "2.5.21",
