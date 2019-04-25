@@ -113,7 +113,7 @@ object BinanceRestAPI {
         method = HttpMethods.GET,
         params = requiredParams ++ optParams,
         version = "v1"
-      ).map(_.dropRight(1))
+      )
     }
 
     def avgPrice(symbol: String)(

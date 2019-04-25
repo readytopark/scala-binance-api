@@ -32,7 +32,7 @@ ThisBuild / publishMavenStyle := true
 
 name := "scala-binance-api"
 
-version := "0.13"
+version := "0.14"
 organization := "io.github.patceev"
 
 scalaVersion := "2.12.8"
