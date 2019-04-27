@@ -46,8 +46,8 @@ object BinanceRestAPI {
 
     def trades(symbol: String, limit: Option[Int] = None)(
       implicit ec: ExecutionContext, mat: Materializer, as: ActorSystem
-    ): Future[List[Trade]] =
-      BinanceRequestHelper.unsignedRequest[List[Trade]](
+    ): Future[Vector[Trade]] =
+      BinanceRequestHelper.unsignedRequest[Vector[Trade]](
         uri = "/trades",
         method = HttpMethods.GET,
         params = Map("symbol" -> symbol) ++ optionalParam("limit", limit),
@@ -63,8 +63,8 @@ object BinanceRestAPI {
       symbol: String,
       limit: Option[Int] = None,
       fromId: Option[Long] = None
-    )(implicit ec: ExecutionContext, mat: Materializer, as: ActorSystem): Future[List[Trade]] =
-      BinanceRequestHelper.unsignedRequest[List[Trade]](
+    )(implicit ec: ExecutionContext, mat: Materializer, as: ActorSystem): Future[Vector[Trade]] =
+      BinanceRequestHelper.unsignedRequest[Vector[Trade]](
         uri = "/historicalTrades",
         method = HttpMethods.GET,
         params = Map("symbol" -> symbol) ++ optionalParams("limit" -> limit, "fromId" -> fromId),
@@ -77,7 +77,7 @@ object BinanceRestAPI {
       startTime: Option[Long] = None,
       endTime: Option[Long] = None,
       limit: Option[Int] = None
-    )(implicit ec: ExecutionContext, mat: Materializer, as: ActorSystem): Future[List[AggregatedTrade]] = {
+    )(implicit ec: ExecutionContext, mat: Materializer, as: ActorSystem): Future[Vector[AggregatedTrade]] = {
       val optParams = optionalParams(
         "fromId" -> fromId,
         "startTime" -> startTime,
@@ -85,7 +85,7 @@ object BinanceRestAPI {
         "limit" -> limit
       )
 
-      BinanceRequestHelper.unsignedRequest[List[AggregatedTrade]](
+      BinanceRequestHelper.unsignedRequest[Vector[AggregatedTrade]](
         uri = "/aggTrades",
         method = HttpMethods.GET,
         params = Map("symbol" -> symbol) ++ optParams,
@@ -99,7 +99,7 @@ object BinanceRestAPI {
       startTime: Option[Long] = None,
       endTime: Option[Long] = None,
       limit: Option[Int] = None
-    )(implicit ec: ExecutionContext, mat: Materializer, as: ActorSystem): Future[List[Candle]] = {
+    )(implicit ec: ExecutionContext, mat: Materializer, as: ActorSystem): Future[Vector[Candle]] = {
       val requiredParams = Map("symbol" -> symbol, "interval" -> interval.toString)
 
       val optParams = optionalParams(
@@ -108,7 +108,7 @@ object BinanceRestAPI {
         "limit" -> limit
       )
 
-      BinanceRequestHelper.unsignedRequest[List[Candle]](
+      BinanceRequestHelper.unsignedRequest[Vector[Candle]](
         uri = "/klines",
         method = HttpMethods.GET,
         params = requiredParams ++ optParams,
@@ -128,8 +128,8 @@ object BinanceRestAPI {
 
     def change24h(symbol: Option[String] = None)(
       implicit ec: ExecutionContext, mat: Materializer, as: ActorSystem
-    ): Future[List[TickerChange]] = {
-      val tickerChanges = BinanceRequestHelper.unsignedRequest[List[TickerChange]](
+    ): Future[Vector[TickerChange]] = {
+      val tickerChanges = BinanceRequestHelper.unsignedRequest[Vector[TickerChange]](
         uri = "/ticker/24hr",
         method = HttpMethods.GET,
         params = Map.empty,
@@ -144,8 +144,8 @@ object BinanceRestAPI {
 
     def price(symbol: Option[String] = None)(
       implicit ec: ExecutionContext, mat: Materializer, as: ActorSystem
-    ): Future[List[Price]] = {
-      val prices = BinanceRequestHelper.unsignedRequest[List[Price]](
+    ): Future[Vector[Price]] = {
+      val prices = BinanceRequestHelper.unsignedRequest[Vector[Price]](
         uri = "/ticker/price",
         method = HttpMethods.GET,
         params = Map.empty,
@@ -160,8 +160,8 @@ object BinanceRestAPI {
 
     def bookTicker(symbol: Option[String] = None)(
       implicit ec: ExecutionContext, mat: Materializer, as: ActorSystem
-    ): Future[List[BookTicker]] = {
-      val bookTickers = BinanceRequestHelper.unsignedRequest[List[BookTicker]](
+    ): Future[Vector[BookTicker]] = {
+      val bookTickers = BinanceRequestHelper.unsignedRequest[Vector[BookTicker]](
         uri = "/ticker/bookTicker",
         method = HttpMethods.GET,
         params = Map.empty,
@@ -296,10 +296,10 @@ object BinanceRestAPI {
       timestamp: Long = System.currentTimeMillis,
     )(
       implicit binanceConfiguration: BinanceConfiguration, ec: ExecutionContext, mat: Materializer, as: ActorSystem
-    ): Future[List[Order]] = {
+    ): Future[Vector[Order]] = {
       val optParams = optionalParams("symbol" -> symbol)
 
-      BinanceRequestHelper.signedRequest[List[Order]](
+      BinanceRequestHelper.signedRequest[Vector[Order]](
         uri = "/openOrders",
         method = HttpMethods.GET,
         params = optParams ++ stdParams(timestamp, recvWindow),
@@ -317,7 +317,7 @@ object BinanceRestAPI {
       timestamp: Long = System.currentTimeMillis
     )(
       implicit binanceConfiguration: BinanceConfiguration, ec: ExecutionContext, mat: Materializer, as: ActorSystem
-    ): Future[List[Order]] = {
+    ): Future[Vector[Order]] = {
       val requiredParams = Map("symbol" -> symbol)
 
       val optParams = optionalParams(
@@ -327,7 +327,7 @@ object BinanceRestAPI {
         "limit" -> limit,
       )
 
-      BinanceRequestHelper.signedRequest[List[Order]](
+      BinanceRequestHelper.signedRequest[Vector[Order]](
         uri = "/allOrders",
         method = HttpMethods.GET,
         params = requiredParams ++ optParams ++ stdParams(timestamp, recvWindow),
@@ -359,7 +359,7 @@ object BinanceRestAPI {
       timestamp: Long = System.currentTimeMillis
     )(
       implicit binanceConfiguration: BinanceConfiguration, ec: ExecutionContext, mat: Materializer, as: ActorSystem
-    ): Future[List[TradeExtended]] = {
+    ): Future[Vector[TradeExtended]] = {
       val optParams = optionalParams(
         "startTime" -> startTime,
         "endTime" -> endTime,
@@ -367,7 +367,7 @@ object BinanceRestAPI {
         "limit" -> limit
       )
 
-      BinanceRequestHelper.signedRequest[List[TradeExtended]](
+      BinanceRequestHelper.signedRequest[Vector[TradeExtended]](
         uri = "/myTrades",
         method = HttpMethods.GET,
         params = Map("symbol" -> symbol) ++ optParams ++ stdParams(timestamp, recvWindow),
