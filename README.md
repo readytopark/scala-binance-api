@@ -1,4 +1,4 @@
-# Welcome to Scala Binance API Wrapper
+# Asynchronous Binance API wrapper written in Scala
 
 This project is a WIP wrapper around Binance REST & WebSocket API. It depends on Akka HTTP for making requests and Circe for JSON deserialization.
 
@@ -97,3 +97,20 @@ The project is still work in progress and not all API endpoints are finished. Mo
 - [ ] All Markets Ticker Stream
 - [ ] Parial Book Depth Stream
 - [ ] Diff.Depth Stream
+
+# Error handling
+
+All errors described in the Binance API documentation are deserialized into corresponding case classes, which makes it easy to handle all neccesary errors. For reference, navigate to `/models/BinanceError.scala`
+
+```scala
+case class IllegalChars(message: String) extends BinanceError
+case class TooManyParameters(message: String) extends BinanceError
+case class MandatoryParamEmptyOrMalformed(message: String) extends BinanceError
+case class UnknownParam(message: String) extends BinanceError
+case class UnreadParameters(message: String) extends BinanceError
+// much more errors ...
+```
+
+```
+generalApi.exchangeInfo.map(println).recover { case TooManyRequests(_) => // do something here }
+```
