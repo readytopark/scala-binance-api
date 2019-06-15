@@ -1,4 +1,4 @@
-# Asynchronous Binance API wrapper written in Scala
+# Asynchronous Binance API wrapper for Scala
 
 This project is a WIP wrapper around Binance REST & WebSocket API. It depends on Akka HTTP for making requests and Circe for JSON deserialization.
 
