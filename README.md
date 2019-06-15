@@ -17,7 +17,7 @@ libraryDependencies += "io.github.patceev" %% "scala-binance-api" % "0.0.1-SNAPS
 
 # Guide
 
-The library tries to be consistent with Binance official API documentation.
+The library tries to be consistent with [Binance official API documentation](https://github.com/binance-exchange/binance-official-api-docs/blob/master/rest-api.md).
 
 An example showing how to get and print historical candles of all Binance's trading pairs:
 
@@ -33,13 +33,66 @@ generalApi.exchangeInfo.map(exchangeInfo =>
 )
 ```
 
+An example showing how to create an order and print out all fills:
+
+```scala
+val accountApi = BinanceRestAPI.AccountEndpoints
+
+accountApi.newOrder(
+  symbol = "RVNBTC", 
+  side = OrderSide.BUY, 
+  `type` = OrderType.MARKET,
+  quantity = 5000
+).foreach(orderResponse => 
+  println(s"Fills: ${orderResponse.fills}")
+)
+```
+
 REST API is split into two objects:
 
-- GeneralEndpoints, which don't requre authentication and provide access to public market data
-- AccountEndpoints, which require auth and provide access to order execution and other methods
+- GeneralEndpoints, which doesn't requre authentication and provides access to public market data
+- AccountEndpoints, which requires auth and provides access to order execution and other methods
 
-AccountEndpoints require having implicit BinanceConfiguration in the scope
+AccountEndpoints requires having implicit BinanceConfiguration in the scope
 
 ```scala
 implicit val binanceConf = BinanceConfiguration(publicKey = "pubKeyHere", privateKey = "privKeyHere")
 ```
+
+# Roadmap
+
+The project is still work in progress and not all API endpoints are finished. Most of the REST API is done, WebSocket isn't fully supported yet.
+
+### Rest API check-list
+
+- [x] time
+- [x] exchangeInfo
+- [x] depth
+- [ ] historicalTrades
+- [x] aggTrades
+- [x] klines
+- [x] avgPrice
+- [x] change24h
+- [x] price
+- [x] bookTicker
+- [x] newTestOrder
+- [x] newOrder
+- [x] orderStatus
+- [x] cancelOrders
+- [x] openOrders
+- [x] allOrders
+- [x] myTrades
+- [ ] startUserDataStream
+- [ ] keepAliveUserDataStream
+- [ ] deleteUserDataStream
+
+### Websocket API check-list
+
+- [x] Aggregated Trade Stream
+- [x] Trade Stream
+- [x] Candle Stream
+- [ ] Mini-ticker Stream
+- [ ] Ticker Stream
+- [ ] All Markets Ticker Stream
+- [ ] Parial Book Depth Stream
+- [ ] Diff.Depth Stream
