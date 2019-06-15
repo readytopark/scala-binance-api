@@ -111,6 +111,8 @@ case class UnreadParameters(message: String) extends BinanceError
 // much more errors ...
 ```
 
-```
-generalApi.exchangeInfo.map(println).recover { case TooManyRequests(_) => // do something here }
+```scala
+generalApi.exchangeInfo
+  .map(println)
+  .recover { case TooManyRequests(_) => // do something here }
 ```
