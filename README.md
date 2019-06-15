@@ -4,6 +4,7 @@ This project is a WIP wrapper around Binance REST & WebSocket API. It depends on
 
 Library is available via both SBT and Maven
 ```
+resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
 libraryDependencies += "io.github.patceev" %% "scala-binance-api" % "0.0.1-SNAPSHOT"
 ```
 
