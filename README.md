@@ -69,6 +69,19 @@ Where version is defined in the `build.sbt` of the library.
 
 ## Guide
 
+Since this library is using Akka HTTP, three implicit values should be in scope whenether you are doing a request.
+- ActorSystem
+- ActorMaterializer
+- ExecutionContext
+
+The simplest way to setup all these values is:
+
+```scala
+implicit val as = ActorSystem()
+implicit val mat = ActorMaterializer()
+implicit val ec = as.dispatcher
+```
+
 ### REST API
 
 REST API is split into two objects:
