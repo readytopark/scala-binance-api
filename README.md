@@ -41,7 +41,8 @@ This project is a WIP wrapper around Binance REST & WebSocket API. It depends on
 ## Installation
 
 Library is available via both SBT and Maven. It is hosted by Sonatype repository manager.
-```
+
+```scala
 resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
 libraryDependencies += "io.github.patceev" %% "scala-binance-api" % "0.0.1-SNAPSHOT"
 ```
@@ -63,6 +64,7 @@ sbt publishLocal
 ```
 
 After that you'll be able to add the library to your dependecies in the same way.
+
 ```libraryDependencies += "io.github.patceev" %% "scala-binance-api" % "VERSION"```
 
 Where version is defined in the `build.sbt` of the library.
