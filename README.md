@@ -57,7 +57,7 @@ libraryDependencies += "io.github.patceev" %% "scala-binance-api" % "0.0.1-SNAPS
 You also always have an option to install the library locally.
 
 ```
-git clone ...
+git clone https://github.com/patceev/scala-binance-api.git
 cd scala-binance-api
 sbt publishLocal
 ```
@@ -83,7 +83,7 @@ val generalApi = BinanceRestAPI.GeneralEndpoints
 	
 generalApi.exchangeInfo.map(exchangeInfo => 
   exchangeInfo.symbols.foreach(symbol =>
-    generalApi.klines(symbol.symbol, CandleInterval.withName("1h")).foreach(candles =>
+    generalApi.klines(symbol.symbol, CandleInterval.`1h`).foreach(candles =>
       println(s"[Symbol $symbol]: $candles")
     )
   )
