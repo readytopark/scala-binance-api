@@ -90,7 +90,7 @@ generalApi.exchangeInfo.map(exchangeInfo =>
 )
 ```
 
-An example showing how to create an order and print out all fills. Please note that having implicit `BinanceConfiguration` is for AccountEndpoint requests is necessary.
+An example showing how to create an order and print out all fills. Please note that having implicit `BinanceConfiguration` is is necessary for AccountEndpoint requests.
 
 ```scala
 val accountApi = BinanceRestAPI.AccountEndpoints
