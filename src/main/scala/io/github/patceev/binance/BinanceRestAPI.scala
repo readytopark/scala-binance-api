@@ -16,6 +16,15 @@ object BinanceRestAPI {
 
   object GeneralEndpoints {
 
+    def ping(implicit ec: ExecutionContext, mat: Materializer, as: ActorSystem): Future[Unit] = {
+      BinanceRequestHelper.unsignedRequest[Unit](
+        uri = "/ping",
+        method = HttpMethods.GET,
+        params = Map.empty,
+        version = "v1"
+      )
+    }
+
     def time(implicit ec: ExecutionContext, mat: Materializer, as: ActorSystem): Future[ExchangeTime] = {
       BinanceRequestHelper.unsignedRequest[ExchangeTime](
         uri = "/exchangeInfo",
@@ -59,6 +68,7 @@ object BinanceRestAPI {
       in its API documentation. Given key it still returns error because it says that there were
       too much arguments
      */
+    @deprecated
     def historicalTrades(
       symbol: String,
       limit: Option[Int] = None,
@@ -223,8 +233,6 @@ object BinanceRestAPI {
         "quantity" -> quantity.toString
       )
 
-      println(price.map(_.toPriceFormat))
-
       val optParams = optionalParams(
         "timeInForce" -> timeInForce,
         "price" -> price.map(_.toPriceFormat),
@@ -268,7 +276,7 @@ object BinanceRestAPI {
 
     def cancelOrder(
       symbol: String,
-      orderId: Option[Long],
+      orderId: Option[Long] = None,
       origClientOrderId: Option[String] = None,
       newClientOrderId: Option[String] = None,
       recvWindow: Option[Long] = None,

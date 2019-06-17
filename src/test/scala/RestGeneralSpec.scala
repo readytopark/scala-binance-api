@@ -15,6 +15,10 @@ class RestGeneralSpec extends AsyncFlatSpec {
 
 	behavior of "Binance General Rest API Spec"
 
+	it should "ping properly" in {
+		generalApi.ping.map(_ => succeed)
+	}
+
 	it should "return time" in {
 		generalApi.time.map(time => assert(time.serverTime > 0))
 	}
