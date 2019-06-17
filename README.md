@@ -1,4 +1,4 @@
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.patceev/scala-binance-api/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.patceev/scala-binance-api)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.patceev/scala-binance-api_2.12/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.patceev/scala-binance-api_2.12)
 
 # Asynchronous Binance API wrapper for Scala
 
