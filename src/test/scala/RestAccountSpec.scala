@@ -25,7 +25,7 @@ class RestAccountSpec extends AsyncFlatSpec {
 
 	behavior of "Binance Account Rest API Spec"
 
-	if (binanceConf.publicKey != "your-key-here") {
+	if (config.getBoolean("binance.isProvided")) {
 
 		it should "send test order" in {
 			accountApi.newTestOrder(
