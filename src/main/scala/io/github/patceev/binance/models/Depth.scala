@@ -5,7 +5,7 @@ import io.circe.{Decoder, HCursor}
 import io.github.patceev.binance.models.Depth.{Ask, Bid}
 
 case class Depth(
-  lastUpdateId: Int,
+  lastUpdateId: Long,
   bids: List[Bid],
   asks: List[Ask]
 )
@@ -24,6 +24,6 @@ object Depth {
 
   object Ask {
     implicit val decode: Decoder[Ask] = (c: HCursor) =>
-      c.as[(Double, Double)].map(bid => Ask(bid._1, bid._2))
+      c.as[(Double, Double)].map(ask => Ask(ask._1, ask._2))
   }
 }

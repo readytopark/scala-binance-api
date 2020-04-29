@@ -28,7 +28,7 @@ class RestGeneralSpec extends AsyncFlatSpec {
 	}
 
 	it should "return depth for 100 by default" in {
-		generalApi.depth("ETHBTC").map(depth => {
+		generalApi.depth("BTCUSDT").map(depth => {
 			assert(depth.asks.length === depth.bids.length)
 			assert(depth.asks.length === 100)
 		})
